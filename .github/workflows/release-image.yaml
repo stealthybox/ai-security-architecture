@@ -3,7 +3,8 @@ name: release-image
 on:
   push:
     tags:
-      - '**'
+      - 'proxy-llm-guard/*'
+      - 'proxy-chatbot/*'
 
 jobs:
   docker-push-component:
@@ -53,7 +54,7 @@ jobs:
             ghcr.io/${{ github.repository }}/${{ steps.prep.outputs.COMPONENT }}
           tags: |
             type=raw,value=${{ steps.prep.outputs.VERSION }}
-            type=raw,value=latest
+            type=raw,value=latest-stable
       - name: Publish multi-arch image
         uses: docker/build-push-action@v6
         id: push
