@@ -10,3 +10,14 @@ resources:
 - 06-pvcs.yaml
 components:
 # - ./netpols/
+images:
+# our images
+- name: proxy-llm-guard
+  newName: ghcr.io/stealthybox/ai-security-architecture/proxy-llm-guard
+  newTag: v0.0.1
+- name: proxy-chatbot
+  newName: ghcr.io/stealthybox/ai-security-architecture/proxy-chatbot
+  newTag: v0.0.1
+# dependencies
+- name: laiyer/llm-guard-api
+  newTag: 0.3.15
