@@ -18,6 +18,7 @@ all: \
 	controls-install \
 	chatbot-build \
 	proxy-llm-guard-build \
+	ns-secret \
 	infra-up
 
 .PHONY: down
@@ -69,14 +70,16 @@ proxy-llm-guard-build: ## Build and load the proxy-llm-guard container
 	docker build -t proxy-llm-guard:latest container/proxy-llm-guard
 	kind load docker-image proxy-llm-guard:latest -n $(CLUSTER_NAME)
 
-.PHONY: infra-up
-infra-up:
+.PHONY: ns-secret
+ns-secret:
 	kubectl apply -f k8s/manifests/00-namespaces.yaml
 
 	kubectl create secret generic app-chatbot-secret \
 		--from-literal=PROXY_API_KEY="$(OPENAI_API_KEY)" \
 		--namespace=app-chatbot
 
+.PHONY: infra-up
+infra-up:
 	kubectl apply -f "k8s/manifests/0[1-6]*.yaml"
 
 	-while [ -z "$$(kubectl -n fw-prompt get po -l app=envoy-proxy -o jsonpath='{.items[0].metadata.generateName}')" -a -z "$$(kubectl -n app-chatbot get po -l app=app-chatbot -o jsonpath='{.items[0].metadata.generateName}')" -a -z "$$(kubectl -n fw-model get po -l app=envoy-proxy -o jsonpath='{.items[0].metadata.generateName}')" ]; do \
