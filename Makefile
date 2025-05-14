@@ -99,7 +99,7 @@ test-prompt-fail:
 
 .PHONY: netpols-apply
 netpols-apply:
-	kubectl apply -f k8s/manifests/07-netpols.yaml
+	kubectl apply -f k8s/manifests/netpols/07-netpols.yaml
 
 .PHONY: test
 test:
